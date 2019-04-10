@@ -1,4 +1,4 @@
-namespace Commons
+namespace dszo.Commons
 
 type Coordinates = { Lat:float ; Lng:float }
 
