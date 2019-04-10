@@ -1,11 +1,11 @@
-﻿namespace dszo
+﻿namespace Dszo
 // Learn more about F# at http://fsharp.org
 
-open dszo.Commons
+open Dszo.Commons
 
 open System
 
-module dumper = 
+module Dumper = 
 
     [<EntryPoint>]
     let main argv =

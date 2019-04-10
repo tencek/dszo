@@ -1,4 +1,4 @@
 #load "Commons.fs"
-open dszo.Commons
+open Dszo.Commons
 
 // Define your library scripting code here
