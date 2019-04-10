@@ -1,4 +1,4 @@
-namespace Dszo.Commons
+namespace Dszo.Domain
 
 type Coordinates = { Lat:float ; Lng:float }
 
