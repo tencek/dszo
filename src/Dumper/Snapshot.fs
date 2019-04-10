@@ -2,7 +2,7 @@
 
 open FSharp.Data
 open Dszo.Domain
-open Dszo.Dumper.Tools
+open Dszo.Tools
 open System
 
 type Snapshot = { TimeStamp:DateTime ; Vehicles:seq<Vehicle> }

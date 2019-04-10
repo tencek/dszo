@@ -1,4 +1,4 @@
-﻿module Dszo.Dumper.Tools
+module Dszo.Tools
 
 let (|Regex|_|) pattern input =
     let m = System.Text.RegularExpressions.Regex.Match(input, pattern)

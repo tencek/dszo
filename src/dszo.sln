@@ -7,6 +7,8 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Domain", "Domain\Domain.fsp
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Dumper", "dumper\Dumper.fsproj", "{D962516B-E328-45B4-9462-397684CF5880}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Tools", "Tools\Tools.fsproj", "{5BDDE215-8FA7-46E6-92CC-A2F39F8E930B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{D962516B-E328-45B4-9462-397684CF5880}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D962516B-E328-45B4-9462-397684CF5880}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D962516B-E328-45B4-9462-397684CF5880}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BDDE215-8FA7-46E6-92CC-A2F39F8E930B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BDDE215-8FA7-46E6-92CC-A2F39F8E930B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BDDE215-8FA7-46E6-92CC-A2F39F8E930B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BDDE215-8FA7-46E6-92CC-A2F39F8E930B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
