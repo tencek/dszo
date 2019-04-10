@@ -1,14 +1,19 @@
 namespace Commons
 
-open System
+type Coordinates = { Lat:float ; Lng:float }
 
-type VehicleInfo = 
+type Orientation = Orientation of int
+
+type Vehicle = 
     {
-        VehicleNumber : int
+        Number : int
         LineNumber : int
-        Delay : TimeSpan
+        Delay : System.TimeSpan
         Station : string
         Direction : string
         Shift : string
         Driver : int
+        Coordinates : Coordinates
+        Orientation : Orientation
     }
+
