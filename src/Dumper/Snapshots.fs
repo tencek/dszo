@@ -10,7 +10,7 @@ type Snapshot = { TimeStamp:DateTime ; Vehicles:seq<Vehicle> }
 
 type Vehicles = JsonProvider<"http://www.dszo.cz/online/tabs2.php", Encoding="utf-8">
 
-let CreateSnapShot () =
+let CreateSnapShot logger =
     let loadCoordinates () = 
         let (timeStamp, coordinates, orientations) = 
             Http.RequestString("http://www.dszo.cz/online/pokus.php", responseEncodingOverride="utf-8").Split('\n')
@@ -25,7 +25,7 @@ let CreateSnapShot () =
                         (DateTime.Parse(dateTimeStr) |> Some, coordinates, orientations)
                     with
                         _exn -> 
-                            printfn "Failed to parse %A as date time!" dateTimeStr
+                            logger <| sprintf "Failed to parse %A as date time!" dateTimeStr
                             (timestamp, coordinates, orientations)
                 | _ -> 
                     (timestamp, coordinates, orientations)
@@ -34,7 +34,7 @@ let CreateSnapShot () =
         | Some timeStamp -> 
             (timeStamp, Map.ofList coordinates, Map.ofList orientations)
         | None -> 
-            printfn "Timestamp not loaded! Using current time..."
+            logger <| "Timestamp not loaded! Using current time..."
             (DateTime.Now, Map.ofList coordinates, Map.ofList orientations)
 
     let (timeStamp, coordinates, orientations) = loadCoordinates ()
@@ -55,15 +55,15 @@ let CreateSnapShot () =
                 } |> Some
             with
                 exn -> 
-                    printfn "Data error: %A" exn
-                    printfn "Item not parsed: %A" item
+                    logger <| sprintf "Data error: %A" exn
+                    logger <| sprintf "Item not parsed: %A" item
                     None
         )
         |> Seq.choose id
         |> Seq.sortBy (fun vehicle -> vehicle.Number)
     { TimeStamp=timeStamp ; Vehicles=vehicles }
 
-let SaveSnapshot outFilePath snapshot = 
+let SaveSnapshot logger outFilePath snapshot = 
     if not <| File.Exists(outFilePath) then
         let line = sprintf "%A;%A;%A;%A;%A;%A;%A;%A;%A;%A;%A;%A;%A" "DayOfWeek" "Date" "Time" "Number" "LineNumber" "Delay" "Station" "Direction" "Shift" "Driver" "Latitude" "Longitude" "Orientation"
         File.AppendAllLines (outFilePath, Seq.singleton line) 
