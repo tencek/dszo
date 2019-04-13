@@ -2,22 +2,21 @@
 // Learn more about F# at http://fsharp.org
 
 [<Literal>]
-let OutputFile = @"C:\temp\vehicles2.csv"
-
+let OutFile = @"C:\temp\vehicles2.csv"
 
 [<EntryPoint>]
 let main argv =
     let logger str = printfn "%A: %s" System.DateTime.Now str
-    let saveSnapshot = Snapshots.SaveSnapshot logger OutputFile
-    let createSnapshot () = Snapshots.CreateSnapShot logger
+    let AsyncSaveSnapshot = Snapshots.AsyncSaveSnapshot logger OutFile
+    let AsyncCreateSnapshot () = Snapshots.AsyncCreateSnapshot logger
 
     logger <| "Hello World from dumper!"
     Seq.initInfinite ( fun _x -> ())
     |> Seq.fold (fun lastTimeStamp _elm -> 
         try
-            let snapshot = createSnapshot ()
+            let snapshot = AsyncCreateSnapshot () |> Async.RunSynchronously
             if snapshot.TimeStamp <> lastTimeStamp then
-                saveSnapshot snapshot
+                AsyncSaveSnapshot snapshot |> Async.RunSynchronously
             System.Threading.Thread.Sleep(System.TimeSpan.FromMilliseconds(30000.0))
             snapshot.TimeStamp
         with 
