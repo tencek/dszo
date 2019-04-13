@@ -25,7 +25,7 @@ let CreateSnapShot logger =
                         (DateTime.Parse(dateTimeStr) |> Some, coordinates, orientations)
                     with
                         _exn -> 
-                            logger <| sprintf "Failed to parse %A as date time!" dateTimeStr
+                            logger <| sprintf "Failed to parse %s as date time!" dateTimeStr
                             (timestamp, coordinates, orientations)
                 | _ -> 
                     (timestamp, coordinates, orientations)
@@ -55,7 +55,7 @@ let CreateSnapShot logger =
                 } |> Some
             with
                 exn -> 
-                    logger <| sprintf "Data error: %A" exn
+                    logger <| sprintf "Data error: %s" exn.Message
                     logger <| sprintf "Item not parsed: %A" item
                     None
         )
