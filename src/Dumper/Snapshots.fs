@@ -10,6 +10,24 @@ type Snapshot = { TimeStamp:DateTime ; Vehicles:seq<Vehicle> }
 
 type Vehicles = JsonProvider<"http://www.dszo.cz/online/tabs2.php", Encoding="utf-8">
 
+type Output = CsvProvider<"samples/vehicles.csv", Separators=";", Encoding="utf-8", Culture="cs-CZ">
+
+let AsyncGetLatestTimestamp logger filepath = 
+    async {
+        try
+            let! snapshots = Output.AsyncLoad(filepath)
+            return 
+                snapshots.Rows
+                |> Seq.last
+                |> ( fun lastRow ->
+                    lastRow.Date + lastRow.Time
+                    |> Some)
+        with
+            exn ->
+                logger <| sprintf "Failed to get last snapshot time from %s: %s" filepath exn.Message
+                return None
+        }
+
 let AsyncCreateSnapshot logger = 
     async {
         let! geospatialResponse = 

@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="samples\vehicles.csv" />
     <Compile Include="Snapshots.fs" />
     <Compile Include="Dumper.fs" />
   </ItemGroup>
@@ -19,5 +20,7 @@
     <ProjectReference Include="..\Domain\Domain.fsproj" />
     <ProjectReference Include="..\Tools\Tools.fsproj" />
   </ItemGroup>
+
+  <ItemGroup />
 
 </Project>
