@@ -3,6 +3,7 @@
 open Dszo.Domain
 open Dszo.Tools
 open System
+open System.Globalization
 open System.IO
 open FSharp.Data
 
@@ -10,7 +11,9 @@ type Snapshot = { TimeStamp:DateTime ; Vehicles:seq<Vehicle> }
 
 type Vehicles = JsonProvider<"http://www.dszo.cz/online/tabs2.php", Encoding="utf-8">
 
-type Output = CsvProvider<"samples/vehicles.csv", Separators=";", Encoding="utf-8", Culture="cs-CZ">
+[<Literal>]
+let OutputCulture = "cs-CZ"
+type Output = CsvProvider<"samples/vehicles.csv", Separators=";", Encoding="utf-8", Culture=OutputCulture>
 
 let AsyncGetLatestTimestamp logger filepath = 
     async {
@@ -48,7 +51,7 @@ let AsyncCreateSnapshot logger =
                     (timestamp, coordinates, (int vehicleNum, Orientation (int orientation))::orientations)
                 | Regex @"Data aktualizována: ([0-9:\. ]+)&nbsp;" [dateTimeStr] -> 
                     try
-                        (DateTime.Parse(dateTimeStr) |> Some, coordinates, orientations)
+                        (DateTime.Parse(dateTimeStr, new CultureInfo("cs-CZ")) |> Some, coordinates, orientations)
                     with
                         _exn -> 
                             logger <| sprintf "Failed to parse %s as date time!" dateTimeStr
@@ -71,7 +74,7 @@ let AsyncCreateSnapshot logger =
                     {
                         Number = int item.Strings.[0]
                         LineNumber = int item.Strings.[1]
-                        Delay = TimeSpan.Parse("00:"+item.Strings.[2])
+                        Delay = TimeSpan.Parse("00:"+item.Strings.[2], new CultureInfo("cs-CZ"))
                         Station = item.Strings.[3]
                         Direction = item.Strings.[4]
                         Shift = item.Strings.[5]
@@ -100,11 +103,12 @@ let AsyncSaveSnapshot logger outFilePath snapshot =
         let linesOut = 
             snapshot.Vehicles
             |> Seq.map (fun v -> 
+                let outputFormatProvider = new CultureInfo(OutputCulture)
                 let (Orientation orientation) = v.Orientation
-                sprintf "%A;%s;%s;%d;%d;%A;%A;%A;%A;%d;%f;%f;%d"
-                    snapshot.TimeStamp.DayOfWeek 
-                    (snapshot.TimeStamp.ToShortDateString()) 
-                    (snapshot.TimeStamp.ToLongTimeString()) 
+                sprintf "%s;%s;%s;%d;%d;%A;%A;%A;%A;%d;%f;%f;%d"
+                    (snapshot.TimeStamp.ToString("ddd", outputFormatProvider))
+                    (snapshot.TimeStamp.ToString(outputFormatProvider.DateTimeFormat.ShortDatePattern))
+                    (snapshot.TimeStamp.ToString(outputFormatProvider.DateTimeFormat.LongTimePattern))
                     v.Number 
                     v.LineNumber 
                     v.Delay 
