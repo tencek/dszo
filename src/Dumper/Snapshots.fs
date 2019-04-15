@@ -111,7 +111,7 @@ let AsyncSaveSnapshot logger outFilePath snapshot =
                     (snapshot.TimeStamp.ToString(outputFormatProvider.DateTimeFormat.LongTimePattern))
                     v.Number 
                     v.LineNumber 
-                    v.Delay 
+                    (v.Delay.ToString("c", outputFormatProvider))
                     v.Station 
                     v.Direction 
                     v.Shift 
