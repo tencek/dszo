@@ -29,7 +29,7 @@ let main argv =
                 snapshot.TimeStamp
             with 
                 exn -> 
-                    logger <| sprintf "Some error occured: %A" exn
+                    logger <| sprintf "Some error occured: %s" exn.Message
                     System.Threading.Thread.Sleep(System.TimeSpan.FromMilliseconds(10000.0))
                     lastTimeStamp) ( latestTimestamp )
         |> ignore
