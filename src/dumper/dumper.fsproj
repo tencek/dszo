@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="samples\vehicles.csv" />
+    <None Include="samples\vehicles-v1.csv" />
+    <None Include="samples\vehicles-v2.csv" />
+    <None Include="samples\vehicles-v3.csv" />
     <Compile Include="Snapshots.fs" />
     <Compile Include="Dumper.fs" />
   </ItemGroup>

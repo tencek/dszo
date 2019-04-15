@@ -13,7 +13,7 @@ type Vehicles = JsonProvider<"http://www.dszo.cz/online/tabs2.php", Encoding="ut
 
 [<Literal>]
 let OutputCulture = "cs-CZ"
-type Output = CsvProvider<"samples/vehicles.csv", Separators=";", Encoding="utf-8", Culture=OutputCulture>
+type Output = CsvProvider<"samples/vehicles-v3.csv", Separators=";", Encoding="utf-8", Culture=OutputCulture>
 
 let AsyncGetLatestTimestamp logger filepath = 
     async {
