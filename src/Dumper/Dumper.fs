@@ -25,12 +25,12 @@ let main argv =
                 let snapshot = AsyncCreateSnapshot () |> Async.RunSynchronously
                 if snapshot.TimeStamp <> lastTimeStamp then
                     AsyncSaveSnapshot snapshot |> Async.RunSynchronously
-                System.Threading.Thread.Sleep(System.TimeSpan.FromMilliseconds(30000.0))
+                System.Threading.Thread.Sleep(System.TimeSpan.FromMilliseconds(10000.0))
                 snapshot.TimeStamp
             with 
                 exn -> 
                     logger <| sprintf "Some error occured: %s" exn.Message
-                    System.Threading.Thread.Sleep(System.TimeSpan.FromMilliseconds(10000.0))
+                    System.Threading.Thread.Sleep(System.TimeSpan.FromMilliseconds(5000.0))
                     lastTimeStamp) ( latestTimestamp )
         |> ignore
         0
