@@ -31,6 +31,37 @@ let AsyncGetLatestTimestamp logger filepath =
                 return None
         }
 
+let AsyncGetLatestSnapshot logger filepath = 
+    async {
+        try
+            let! snapshots = Output.AsyncLoad(filepath)
+            let latestTimestamp =
+                snapshots.Rows
+                |> Seq.last
+                |> ( fun lastRow -> lastRow.Date + lastRow.Time)
+            let latestVehicles =
+                snapshots.Rows
+                |> Seq.filter( fun row -> row.Date + row.Time = latestTimestamp)
+                |> Seq.map ( fun row -> 
+                    {
+                        Number = row.Number
+                        LineNumber = row.LineNumber
+                        Delay = row.Delay
+                        Station = row.Station
+                        Direction = row.Direction
+                        Shift = row.Shift
+                        Driver = row.Driver
+                        Coordinates = { Lat = float row.Latitude ; Lng = float row.Longitude }
+                        Orientation = Orientation row.Orientation
+                    })
+                |> Seq.sortBy (fun vehicle -> vehicle.Number)
+            return Some { TimeStamp = latestTimestamp ; Vehicles = latestVehicles }
+        with
+            exn ->
+                logger <| sprintf "Failed to get last snapshot time from %s: %s" filepath exn.Message
+                return None
+        }
+
 let AsyncCreateSnapshot logger = 
     async {
         let! geospatialResponse = 
