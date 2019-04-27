@@ -105,7 +105,7 @@ let AsyncSaveSnapshot logger outFilePath snapshot =
             |> Seq.map (fun v -> 
                 let outputFormatProvider = new CultureInfo(OutputCulture)
                 let (Orientation orientation) = v.Orientation
-                sprintf "%s;%s;%s;%d;%d;%A;%A;%A;%A;%d;%f;%f;%d"
+                sprintf "%s;%s;%s;%d;%d;%A;%A;%A;%A;%d;%s;%s;%d"
                     (snapshot.TimeStamp.ToString("ddd", outputFormatProvider))
                     (snapshot.TimeStamp.ToString(outputFormatProvider.DateTimeFormat.ShortDatePattern))
                     (snapshot.TimeStamp.ToString(outputFormatProvider.DateTimeFormat.LongTimePattern))
@@ -116,8 +116,8 @@ let AsyncSaveSnapshot logger outFilePath snapshot =
                     v.Direction 
                     v.Shift 
                     v.Driver 
-                    v.Coordinates.Lat 
-                    v.Coordinates.Lng 
+                    (v.Coordinates.Lat.ToString(outputFormatProvider))
+                    (v.Coordinates.Lng.ToString(outputFormatProvider)) 
                     orientation)
         do! File.AppendAllLinesAsync(outFilePath, linesOut) |> Async.AwaitTask
         }
