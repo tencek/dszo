@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Dumper": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\temp\\vehicles-test-v3.csv"
+    }
+  }
+}
