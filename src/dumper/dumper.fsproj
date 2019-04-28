@@ -10,6 +10,7 @@
     <None Include="samples\vehicles-v1.csv" />
     <None Include="samples\vehicles-v2.csv" />
     <None Include="samples\vehicles-v3.csv" />
+    <None Include="samples\vehicles-v4.csv" />
     <Compile Include="Snapshots.fs" />
     <Compile Include="Dumper.fs" />
   </ItemGroup>
