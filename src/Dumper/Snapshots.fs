@@ -13,25 +13,10 @@ type Vehicles = JsonProvider<"http://www.dszo.cz/online/tabs2.php", Encoding="ut
 
 [<Literal>]
 let OutputCulture = "cs-CZ"
-type Output = CsvProvider<"samples/vehicles-v3.csv", Separators=";", Encoding="utf-8", Culture=OutputCulture>
+type Output = CsvProvider<"samples/vehicles-v3.csv", Separators=";", Encoding="utf-8", Culture=OutputCulture,
+                            Schema="Latitude=float,Longitude=float">
 
-let AsyncGetLatestTimestamp logger filepath = 
-    async {
-        try
-            let! snapshots = Output.AsyncLoad(filepath)
-            return 
-                snapshots.Rows
-                |> Seq.last
-                |> ( fun lastRow ->
-                    lastRow.Date + lastRow.Time
-                    |> Some)
-        with
-            exn ->
-                logger <| sprintf "Failed to get last snapshot time from %s: %s" filepath exn.Message
-                return None
-        }
-
-let AsyncGetLatestSnapshot logger filepath = 
+let AsyncLoadLatestSnapshot logger filepath = 
     async {
         try
             let! snapshots = Output.AsyncLoad(filepath)
@@ -51,7 +36,7 @@ let AsyncGetLatestSnapshot logger filepath =
                         Direction = row.Direction
                         Shift = row.Shift
                         Driver = row.Driver
-                        Coordinates = { Lat = float row.Latitude ; Lng = float row.Longitude }
+                        Coordinates = { Lat = row.Latitude ; Lng = row.Longitude }
                         Orientation = Orientation row.Orientation
                     })
                 |> Seq.sortBy (fun vehicle -> vehicle.Number)
@@ -62,7 +47,7 @@ let AsyncGetLatestSnapshot logger filepath =
                 return None
         }
 
-let AsyncCreateSnapshot logger = 
+let AsyncTakeSnapshot logger = 
     async {
         let! geospatialResponse = 
             Http.AsyncRequestString("http://www.dszo.cz/online/pokus.php", responseEncodingOverride="utf-8") 
