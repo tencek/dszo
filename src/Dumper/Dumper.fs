@@ -34,7 +34,7 @@ let main argv =
                 if change <> 0 then
                     logger <| sprintf "Change! %A, diff? %A!" snapshot.TimeStamp diff
                     AsyncSaveSnapshot snapshot |> Async.RunSynchronously
-                System.Threading.Thread.Sleep(System.TimeSpan.FromMilliseconds(1000.0))
+                System.Threading.Thread.Sleep(System.TimeSpan.FromMilliseconds(20000.0))
                 snapshot
             with 
                 exn -> 
