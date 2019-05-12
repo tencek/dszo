@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="scripts\V1ToV4.fsx" />
     <None Include="samples\vehicles-v1.csv" />
     <None Include="samples\vehicles-v2.csv" />
     <None Include="samples\vehicles-v3.csv" />
@@ -23,7 +24,5 @@
     <ProjectReference Include="..\Domain\Domain.fsproj" />
     <ProjectReference Include="..\Tools\Tools.fsproj" />
   </ItemGroup>
-
-  <ItemGroup />
 
 </Project>
