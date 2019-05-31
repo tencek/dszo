@@ -1,0 +1,5 @@
+﻿FROM mcr.microsoft.com/dotnet/core/runtime:2.1
+RUN mkdir Dszo.Dumper
+COPY Dumper/bin/Release/netcoreapp2.1/publish Dszo.Dumper
+VOLUME C:/dump
+ENTRYPOINT ["dotnet", "Dszo.Dumper/Dszo.Dumper.dll", "C:/dump/vehicles-dockertest.csv"]
